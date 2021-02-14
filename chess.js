@@ -60,15 +60,24 @@ var Chess = function(fen) {
     w: [-16, -32, -17, -15]
   };
 
-  // "s"hort and "L"ong ranged movement
+  // "s"hort and "L"ong ranged movement -- these are used for PIECE_OFFSETS
   function s(offset) { return { offset, once_only: true }; }
   function L(offset) { return { offset, once_only: false }; }
-  var PIECE_OFFSETS = {
-    n: [s(-18), s(-33), s(-31), s(-14),  s(18), s(33), s(31),  s(14)],
-    b: [L(-17), L(-15),  L(17),  L(15)],
-    r: [L(-16),   L(1),  L(16),  L(-1)],
-    q: [L(-17), L(-16), L(-15),   L(1),  L(17), L(16), L(15),  L(-1)],
-    k: [s(-17), s(-16), s(-15),   s(1),  s(17), s(16), s(15),  s(-1)]
+
+  // var PIECE_OFFSETS = { // standard chess
+  //   n: [s(-18), s(-33), s(-31), s(-14),  s(18), s(33), s(31),  s(14)],
+  //   b: [L(-17), L(-15),  L(17),  L(15)],
+  //   r: [L(-16),   L(1),  L(16),  L(-1)],
+  //   q: [L(-17), L(-16), L(-15),   L(1),  L(17), L(16), L(15),  L(-1)],
+  //   k: [s(-17), s(-16), s(-15),   s(1),  s(17), s(16), s(15),  s(-1)]
+  // };
+
+  var PIECE_OFFSETS = { // cwda "nutty knights"
+    /* fibnif */         n: [s(-33), s(-17), s(15),  s(31), s(-31), s(-15), s(17),  s(33)],
+    /* charging knight*/ b: [s(-1),  s(1),   s(15),  s(16), s(17),          s(-33), s(-31), s(-18), s(-14)], // not a mistake: the only piece named "knight" is indeed placed where the bishop goes
+    /* charging rook */  r: [L(-16), L(1),   L(-1),  s(15), s(16),  s(17)],
+    /* colonel */        q: [L(-16), L(1),   L(-1),  s(15), s(16),  s(17),  s(-33), s(-31), s(-18), s(-14), s(-15), s(-17)],
+    k: [s(-17), s(-16), s(-15), s(1),  s(17),  s(16),  s(15),  s(-1)]
   };
 
   var ATTACKS = [
