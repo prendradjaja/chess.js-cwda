@@ -556,6 +556,9 @@ var Chess = function(fen) {
       } else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
           var { offset, once_only } = PIECE_OFFSETS[piece.type][j];
+          if (us === 'b') {
+            offset *= -1;
+          }
           var square = i;
 
           while (true) {
