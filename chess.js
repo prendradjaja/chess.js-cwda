@@ -60,12 +60,15 @@ var Chess = function(fen) {
     w: [-16, -32, -17, -15]
   };
 
+  // "s"hort and "L"ong ranged movement
+  function s(offset) { return { offset, once_only: true }; }
+  function L(offset) { return { offset, once_only: false }; }
   var PIECE_OFFSETS = {
-    n: [-18, -33, -31, -14,  18, 33, 31,  14],
-    b: [-17, -15,  17,  15],
-    r: [-16,   1,  16,  -1],
-    q: [-17, -16, -15,   1,  17, 16, 15,  -1],
-    k: [-17, -16, -15,   1,  17, 16, 15,  -1]
+    n: [s(-18), s(-33), s(-31), s(-14),  s(18), s(33), s(31),  s(14)],
+    b: [L(-17), L(-15),  L(17),  L(15)],
+    r: [L(-16),   L(1),  L(16),  L(-1)],
+    q: [L(-17), L(-16), L(-15),   L(1),  L(17), L(16), L(15),  L(-1)],
+    k: [s(-17), s(-16), s(-15),   s(1),  s(17), s(16), s(15),  s(-1)]
   };
 
   var ATTACKS = [
@@ -552,7 +555,7 @@ var Chess = function(fen) {
         }
       } else {
         for (var j = 0, len = PIECE_OFFSETS[piece.type].length; j < len; j++) {
-          var offset = PIECE_OFFSETS[piece.type][j];
+          var { offset, once_only } = PIECE_OFFSETS[piece.type][j];
           var square = i;
 
           while (true) {
@@ -567,8 +570,7 @@ var Chess = function(fen) {
               break;
             }
 
-            /* break, if knight or king */
-            if (piece.type === 'n' || piece.type === 'k') break;
+            if (once_only) break;
           }
         }
       }
